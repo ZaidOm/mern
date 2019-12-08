@@ -25,19 +25,19 @@ router.route('/add').post((req, res) => {
       .catch(err => res.status(400).json('Error: ' + err));
 });
 
-router.route('/id').get((req, res) => {
+router.route('/:id').get((req, res) => {
     Tracking.findById(req.params.id)
       .then(tracking => res.json(tracking))
       .catch(err => res.status(400).json('Error: ' + err));
 });
 
-router.route('/id').delete((req, res) => {
+router.route('/:id').delete((req, res) => {
     Tracking.findById(req.params.id)
       .then(() => res.json('Tracking Deleted'))
       .catch(err => res.status(400).json('Error: ' + err));
 });
 
-router.route('update/:id').post((req, res) => {
+router.route('/update/:id').post((req, res) => {
     Tracking.findById(req.params.id)
       .then(tracking => {
           tracking.username = req.body.username;
