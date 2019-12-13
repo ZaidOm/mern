@@ -2,7 +2,7 @@ import React from 'react';
 // import logo from './logo.svg';
 import Portfolio from './components/Portfolio'
 import './App.css';
-import NavBar from './components/navbar';
+import NavBar from './components/home/navbar/navbar.js';
 
 function App() {
   const portfolioLinks = [
