@@ -2,7 +2,8 @@ import React from 'react';
 // import logo from './logo.svg';
 import Portfolio from './components/Portfolio'
 import './App.css';
-import NavBar from './components/home/navbar/navbar.js';
+import { Login } from "./components/auth/index";
+import NavBar from './components/home/navbar/navbar';
 
 function App() {
   const portfolioLinks = [

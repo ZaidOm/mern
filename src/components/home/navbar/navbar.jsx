@@ -1,16 +1,16 @@
 import React from 'react';
 import { Nav, Navbar } from 'react-bootstrap';
-import LuxLogo from './../../../assets/img/luxlogo.png';
+import Logo from './../../../assets/img/logo.png';
 import './navbar.css';
 
 class NavBar extends React.Component {
   render () {
     return (
-        <Navbar sticky="top" bg="dark" variant="dark" >
+        <Navbar sticky="top" bg="dark">
         <Navbar.Brand href="#home">
             <img
             alt=""
-            src={LuxLogo}
+            src={Logo}
             className="d-inline-block "
             />{' '}
         </Navbar.Brand>
