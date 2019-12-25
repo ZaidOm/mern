@@ -1,5 +1,6 @@
 import React from "react";
 import loginImg from "../../login.svg";
+import axios from "axios";
 
 export class Login extends React.Component {
   constructor(props) {
@@ -8,6 +9,8 @@ export class Login extends React.Component {
       username: '',
       password: ''
      };
+    this.change= this.change.bind(this);
+    this.submitLogin = this.submitLogin.bind(this);
   }
 
   change = (e) => {
@@ -16,28 +19,27 @@ export class Login extends React.Component {
       });
   };
 
-  createRequest(opts) {
-    fetch('https://api.github.com/gists', {
-      method: 'post',
-      body: JSON.stringify(opts)
-    }).then(function(response) {
-      return response.json();
-    }).then(function(data) {
-      console.log('Signed in');
-    });
-    console.log(this.state.username);
-    console.log(this.state.password);
-  }
-
   submitLogin(e){
-    e.preventDefault();
-    var content = document.querySelector('textarea').value;
-    if (content) {
-      this.createRequest({
-        username: this.state.username,
-        password: this.state.password
+    const { username, password } = this.state;
+
+    axios
+      .post(
+        "http://localhost:5000/users/signin",
+        {
+          username: username,
+          password: password
+        }
+      )
+      .then(response => {
+        console.log(response.data);
+        if (response.data.logged_in) {
+          this.props.handleSuccessfulAuth(response.data);
+        }
+      })
+      .catch(error => {
+        console.log("login error", error);
       });
-    }
+    e.preventDefault();
   }
 
   render() {
@@ -48,21 +50,23 @@ export class Login extends React.Component {
           <div className="image">
             <img src={loginImg} alt="login-img" />
           </div>
-          <div className="form">
-            <div className="form-group">
-              <label htmlFor="username">Username</label>
-              <input type="username" name="username" placeholder="username" value={this.state.username} onChange={e => this.change(e)}/>
+          <form onSubmit={e => this.submitLogin(e)} >
+            <div className="form">
+              <div className="form-group">
+                <label htmlFor="username">Username</label>
+                <input type="username" name="username" placeholder="username" value={this.state.username} onChange={e => this.change(e)}/>
+              </div>
+              <div className="form-group">
+                <label htmlFor="password">Password</label>
+                <input type="password" name="password" placeholder="password" value={this.state.password} onChange={e => this.change(e)}/>
+              </div>
             </div>
-            <div className="form-group">
-              <label htmlFor="password">Password</label>
-              <input type="password" name="password" placeholder="password" value={this.state.password} onChange={e => this.change(e)}/>
+            <div className="footer">
+            <button type="submit" className="btn">
+              Login
+            </button>
             </div>
-          </div>
-        </div>
-        <div className="footer">
-          <button type="button" className="btn" onClick={e => this.submitLogin(e)}>
-            Login
-          </button>
+          </form>
         </div>
       </div>
     );

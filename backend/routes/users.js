@@ -78,17 +78,14 @@ router.route('/add').post((req, res) => {
 router.route('/signin').post((req, res, next) => {
   const { body } = req;
   const {
+    username,
     password
   } = body;
 
-  let {
-    email
-  } = body;
-
-  if(!email) {
+  if(!username) {
     return res.send({
       success: false,
-      message: 'Error: email cannot be blank'
+      message: 'Error: Username cannot be blank'
     });
   }
   if(!password) {
@@ -98,20 +95,19 @@ router.route('/signin').post((req, res, next) => {
     });
   }
 
-  email = email.toLowerCase();
   User.find({
-    email: email
+    username: username
   }, (err, users) => {
     if (err) {
       return res.send({
         success: false,
-        message: 'Error: server error'
+        message: 'Error: Server error'
       });
     }
     if (users.length != 1) {
       return res.send({
         success: false,
-        message: 'Error: Invalid'
+        message: 'Error: Invalid User'
       });
     }
 
