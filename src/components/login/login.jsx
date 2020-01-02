@@ -42,7 +42,6 @@ export class Login extends React.Component {
               toHome: true
             });
           });
-          console.log(response.data);
           setInStorage("token", response.data.token);
         }
       })

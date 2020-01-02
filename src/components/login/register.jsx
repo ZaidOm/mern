@@ -2,6 +2,8 @@ import React from "react";
 import loginImg from "../../login.svg";
 import axios from "axios";
 import { Redirect } from "react-router-dom";
+import auth from "./../auth/auth.user";
+import {setInStorage} from "./../../utils/storage";
 
 export class Register extends React.Component {
   constructor(props) {
@@ -36,9 +38,12 @@ export class Register extends React.Component {
       )
       .then(response => {
         if (response.data.success === true) {
-          this.setState({
-            toHome: true
-          })
+          auth.login(() => {
+            this.setState({
+              toHome: true
+            });
+          });
+          setInStorage("token", response.data.token);
         }
       })
       .catch(error => {
