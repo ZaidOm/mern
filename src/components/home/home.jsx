@@ -36,7 +36,7 @@ submitLogout(e){
     )
     .then(response => {
       if (response.data.success === true) {
-        auth.login(() => {
+        auth.logout(() => {
           this.setState({
             toLogin: true
           });

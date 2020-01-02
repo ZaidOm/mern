@@ -1,3 +1,5 @@
+import {setInStorage, getFromStorage} from "./../../utils/storage";
+
 class Auth {
     constructor() {
         this.authenticated = false;
@@ -5,15 +7,18 @@ class Auth {
 
     login(cb) {
         this.authenticated = true;
+        setInStorage("isAuthenticated", this.authenticated);
         cb();
     }
 
     logout(cb) {
         this.authenticated = false;
+        setInStorage("isAuthenticated", this.authenticated);
+        cb();
     }
 
     isAuthenticated() {
-        return this.authenticated;
+        return getFromStorage("isAuthenticated");
     }
 }
 
