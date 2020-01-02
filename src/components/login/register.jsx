@@ -1,9 +1,57 @@
 import React from "react";
 import loginImg from "../../login.svg";
+import axios from "axios";
+import { Redirect } from "react-router-dom";
 
 export class Register extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      username: '',
+      email: '',
+      password: '',
+      toHome: false
+     };
+    this.change= this.change.bind(this);
+    this.submitRegister = this.submitRegister.bind(this);
+  }
+
+  change = (e) => {
+      this.setState({
+          [e.target.name]: e.target.value
+      });
+  };
+
+  submitRegister(e){
+    const { username, email, password } = this.state;
+
+    axios
+      .post(
+        "http://localhost:5000/users/add",
+        {
+          username: username,
+          email: email,
+          password: password
+        }
+      )
+      .then(response => {
+        if (response.data.success === true) {
+          this.setState({
+            toHome: true
+          })
+        }
+      })
+      .catch(error => {
+        console.log("register error", error);
+      });
+    e.preventDefault();
+  }
 
   render() {
+    if (this.state.toHome === true)
+    {
+        return <Redirect to='/home' />
+    }
     return (
       <div className="base-container" ref={this.props.containerRef}>
         <div className="header">Register</div>
@@ -11,25 +59,27 @@ export class Register extends React.Component {
           <div className="image">
             <img src={loginImg} alt="login-img" />
           </div>
-          <div className="form">
-            <div className="form-group">
-              <label htmlFor="username">Username</label>
-              <input type="text" name="username" placeholder="username" />
+          <form onSubmit={e => this.submitRegister(e)} >
+            <div className="form">
+              <div className="form-group">
+                <label htmlFor="username">Username</label>
+                <input type="text" name="username" placeholder="username" value={this.state.username} onChange={e => this.change(e)}/>
+              </div>
+              <div className="form-group">
+                <label htmlFor="email">Email</label>
+                <input type="text" name="email" placeholder="email" value={this.state.email} onChange={e => this.change(e)}/>
+              </div>
+              <div className="form-group">
+                <label htmlFor="password">Password</label>
+                <input type="password" name="password" placeholder="password" value={this.state.password} onChange={e => this.change(e)}/>
+              </div>
             </div>
-            <div className="form-group">
-              <label htmlFor="email">Email</label>
-              <input type="text" name="email" placeholder="email" />
+            <div className="footer">
+            <button type="submit" className="btn">
+              Register
+            </button>
             </div>
-            <div className="form-group">
-              <label htmlFor="password">Password</label>
-              <input type="text" name="password" placeholder="password" />
-            </div>
-          </div>
-        </div>
-        <div className="footer">
-          <button type="button" className="btn">
-            Register
-          </button>
+          </form>
         </div>
       </div>
     );

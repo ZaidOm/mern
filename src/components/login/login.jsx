@@ -1,16 +1,20 @@
 import React from "react";
 import loginImg from "../../login.svg";
 import axios from "axios";
+import { Redirect } from "react-router-dom";
+import auth from "./../auth/auth.user";
 
 export class Login extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      username: '',
-      password: ''
-     };
     this.change= this.change.bind(this);
     this.submitLogin = this.submitLogin.bind(this);
+    this.state = {
+      username: '',
+      password: '',
+      toHome: false
+     };
+    
   }
 
   change = (e) => {
@@ -31,9 +35,12 @@ export class Login extends React.Component {
         }
       )
       .then(response => {
-        console.log(response.data);
-        if (response.data.logged_in) {
-          this.props.handleSuccessfulAuth(response.data);
+        if (response.data.success === true) {
+          auth.login(() => {
+            this.setState({
+              toHome: true
+            });
+          });
         }
       })
       .catch(error => {
@@ -43,6 +50,10 @@ export class Login extends React.Component {
   }
 
   render() {
+    if (this.state.toHome === true)
+    {
+        return <Redirect to='/home' />
+    }
     return (
       <div className="base-container" ref={this.props.containerRef}>
         <div className="header">Login</div>
@@ -50,7 +61,7 @@ export class Login extends React.Component {
           <div className="image">
             <img src={loginImg} alt="login-img" />
           </div>
-          <form onSubmit={e => this.submitLogin(e)} >
+          <form onSubmit={(e) => this.submitLogin(e)} >
             <div className="form">
               <div className="form-group">
                 <label htmlFor="username">Username</label>

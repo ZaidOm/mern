@@ -1,10 +1,8 @@
 import React from "react";
-import "./App.scss";
-import { Login, Register } from "./components/login/index";
-import { getFromStorage } from "./utils/storage";
-import axios from "axios";
+import "./style.scss";
+import { Login, Register } from "./index";
 
-class App extends React.Component {
+class LoginRegister extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -14,33 +12,6 @@ class App extends React.Component {
 
   componentDidMount() {
     //Add .right by default
-    const token = getFromStorage('Tracker');
-    if (token) {
-      //verify token
-      axios
-        .get(
-          "http://localhost:5000/users/signin",
-        )
-        .then(response => response.json())
-        .then(json => {
-          if (json.success) {
-            this.setState({
-              token,
-              isLogginActive: false
-            });
-          } else {
-            this.setState({
-              isLogginActive: false,
-            });
-          }
-        });
-    } else {
-      //no token
-      console.log(token);
-      this.setState({
-        isLogginActive: false
-      });
-    }
     this.rightSide.classList.add("right");
   }
 
@@ -58,7 +29,7 @@ class App extends React.Component {
   }
 
   render() {
-    const { isLogginActive, token } = this.state;
+    const { isLogginActive } = this.state;
     const current = isLogginActive ? "Register" : "Login";
     const currentActive = isLogginActive ? "login" : "register";
     return (
@@ -68,7 +39,7 @@ class App extends React.Component {
             {isLogginActive && (
               <Login containerRef={ref => (this.current = ref)} />
             )}
-            {!isLogginActive && !token && (
+            {!isLogginActive && (
               <Register containerRef={ref => (this.current = ref)} />
             )}
           </div>
@@ -98,4 +69,4 @@ const RightSide = props => {
   );
 };
 
-export default App;
+export default LoginRegister;
