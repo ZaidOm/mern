@@ -1,5 +1,5 @@
 import React from "react";
-import loginImg from "../../login.svg";
+import loginImg from "./../../assets/logo.png";
 import axios from "axios";
 import { Redirect } from "react-router-dom";
 import auth from "./../auth/auth.user";
