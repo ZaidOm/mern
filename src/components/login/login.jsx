@@ -3,6 +3,7 @@ import loginImg from "../../login.svg";
 import axios from "axios";
 import { Redirect } from "react-router-dom";
 import auth from "./../auth/auth.user";
+import {setInStorage} from "./../../utils/storage";
 
 export class Login extends React.Component {
   constructor(props) {
@@ -41,6 +42,8 @@ export class Login extends React.Component {
               toHome: true
             });
           });
+          console.log(response.data);
+          setInStorage("token", response.data.token);
         }
       })
       .catch(error => {

@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const User = require('../models/user.model');
-const UserSession = require('../models/userSesion.model');
+const UserSession = require('../models/userSession.model');
 
 router.route('/').get((req, res) => {
     User.find()
@@ -99,74 +99,42 @@ router.route('/signin').post((req, res, next) => {
     username: username
   }, (err, users) => {
     if (err) {
+      console.log('err 2:', err);
       return res.send({
         success: false,
-        message: 'Error: Server error'
+        message: 'Error: server error'
       });
     }
     if (users.length != 1) {
       return res.send({
         success: false,
-        message: 'Error: Invalid User'
+        message: 'Error: Invalid'
       });
     }
-
     const user = users[0];
     if (!user.validPassword(password)) {
       return res.send({
         success: false,
-        message: 'Error: Invalid Password'
+        message: 'Error: Invalid'
       });
     }
-
-    // Correct the user
+    // Otherwise correct user
     const userSession = new UserSession();
-    userSession.userId - user._id;
+    userSession.userId = user._id;
     userSession.save((err, doc) => {
       if (err) {
+        console.log(err);
         return res.send({
           success: false,
           message: 'Error: server error'
         });
       }
-
       return res.send({
         success: true,
         message: 'Valid sign in',
-        token: doc._id
+        token: user._id
       });
     });
-  });
-});
-
-router.route('/verify').get((req, res, next) => { 
-    // Get Token
-    const { query } = req;
-    const { token } = query;
-    // ?token = test
-    // Verify token is unique
-    UserSession.find({
-      _id: token,
-      isDeleted: false
-    }, (err, sessions) => {
-      if (err) {
-        return res.send({
-          success: false,
-          message: 'Error: Server error'
-        });
-      }
-      if (sessions.length != 1) {
-        return res.send({
-          success: false,
-          message: 'Error: Invalid'
-        })
-      }
-      else {
-        return res.send({
-          success: true,
-          message: 'Valid'
-      });
-    };
   });
 });
     
@@ -177,7 +145,7 @@ router.route('/logout').get((req, res, next) => {
     // ?token = test
     // Verify token is unique
     UserSession.findOneAndUpdate({
-      _id: token,
+      userId: token,
       isDeleted: false
     }, {
       $set:{isDeleted:true}
