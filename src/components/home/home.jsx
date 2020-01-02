@@ -3,6 +3,7 @@ import axios from "axios";
 import { Redirect } from "react-router-dom";
 import auth from "./../auth/auth.user";
 import { getFromStorage, deleteFromStorage } from "./../../utils/storage";
+import Sidebar from "../sidebar/sidebar";
 
 export class Home extends React.Component {
   constructor(props) {
@@ -56,13 +57,11 @@ submitLogout(e){
         return <Redirect to='/' />
     }
     return (
-      <div className="base-container" ref={this.props.containerRef}>
-        <div className="header">Home</div>
+      <div>
+        <Sidebar></Sidebar>
         <button onClick={(e) => {this.submitLogout(e)}}>LogOut</button>
-        <div className="content">
-        
-        </div>
       </div>
+        
     );
   }
 }
