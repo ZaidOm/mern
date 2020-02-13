@@ -74,6 +74,7 @@ export class Login extends React.Component {
     }
     return (
       <div className="base-container" ref={this.props.containerRef}>
+        {this.state.alertVisible ? <Alert color={this.state.alertColor} message={this.state.alertText}/> : null}
         <div className="header">Login</div>
         <div className="content">
           <div className="image">
@@ -105,7 +106,6 @@ export class Login extends React.Component {
             </div>
           </AvForm>
         </div>
-        {this.state.alertVisible ? <Alert color={this.state.alertColor} message={this.state.alertText}/> : null}
       </div>
     );
   }

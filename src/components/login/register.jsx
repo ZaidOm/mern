@@ -72,6 +72,7 @@ export class Register extends React.Component {
     }
     return (
       <div className="base-container" ref={this.props.containerRef}>
+      {this.state.alertVisible ? <Alert color={this.state.alertColor} message={this.state.alertText}/> : null}
         <div className="header">Register</div>
         <div className="content">
           <div className="image">
@@ -110,9 +111,6 @@ export class Register extends React.Component {
             </Button>
             </div>
           </AvForm>
-          <div className="alert">
-            {this.state.alertVisible ? <Alert color={this.state.alertColor} message={this.state.alertText}/> : null}
-          </div>
         </div>
       </div>
     );
