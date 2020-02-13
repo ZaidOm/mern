@@ -7,7 +7,7 @@ export function SideBarHeader(props) {
   return (
     <Menu.Item>
       <Menu.Header className='side-bar-header'>
-        <img className='side-bar-image' src={heading}/>
+        <img className='side-bar-image' src={heading} alt='sidebarheaderimage'/>
       </Menu.Header>
     </Menu.Item>
   );

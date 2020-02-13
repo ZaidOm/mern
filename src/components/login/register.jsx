@@ -3,7 +3,7 @@ import loginImg from "./../../assets/logo.png";
 import axios from "axios";
 import { Redirect } from "react-router-dom";
 import { AvForm, AvField } from 'availity-reactstrap-validation';
-import { Button, FormGroup, Label, FormFeedback} from 'reactstrap';
+import { Button, FormGroup, Label} from 'reactstrap';
 
 import Alert from './../validation/alert';
 import auth from "./../auth/auth.user";
@@ -94,7 +94,7 @@ export class Register extends React.Component {
               <Label htmlFor="email">Email</Label>
               <AvField type="text" name="email" placeholder="email" value={this.state.email} onChange={e => this.change(e)} validate={{
                   required: {value: true, errorMessage: 'Don\'t forget to fill out your email!'},
-                  pattern: {value: '/^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/', 
+                  pattern: {value: '/^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:.[a-zA-Z0-9-]+)*$/', 
                   errorMessage: 'Hmm, Is that really your email?.'}
                 }}/>
             </FormGroup>
