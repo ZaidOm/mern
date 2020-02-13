@@ -2,6 +2,8 @@ import React from "react";
 import loginImg from "./../../assets/logo.png";
 import axios from "axios";
 import { Redirect } from "react-router-dom";
+import Alert from './../validation/alert';
+
 import auth from "./../auth/auth.user";
 import {setInStorage} from "./../../utils/storage";
 
@@ -12,7 +14,10 @@ export class Register extends React.Component {
       username: '',
       email: '',
       password: '',
-      toHome: false
+      toHome: false,
+      alertVisible: false,
+      alertColor: '',
+      alertText: ''
      };
     this.change= this.change.bind(this);
     this.submitRegister = this.submitRegister.bind(this);
@@ -37,7 +42,7 @@ export class Register extends React.Component {
         }
       )
       .then(response => {
-        if (response.data.success === true) {
+        if (response.data.success === 'SU001') {
           auth.login(() => {
             this.setState({
               toHome: true
@@ -80,6 +85,7 @@ export class Register extends React.Component {
               </div>
             </div>
             <div className="footer">
+            {this.state.alertVisible ? <Alert color={this.state.alertColor} message={this.state.alertText}/> : null}
             <button type="submit" className="btn">
               Register
             </button>

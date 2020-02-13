@@ -2,6 +2,8 @@ import React from "react";
 import loginImg from "./../../assets/logo.png";
 import axios from "axios";
 import { Redirect } from "react-router-dom";
+import Alert from './../validation/alert';
+
 import auth from "./../auth/auth.user";
 import {setInStorage} from "./../../utils/storage";
 
@@ -13,9 +15,11 @@ export class Login extends React.Component {
     this.state = {
       username: '',
       password: '',
-      toHome: false
+      toHome: false,
+      alertVisible: false,
+      alertColor: '',
+      alertText: ''
      };
-    
   }
 
   change = (e) => {
@@ -36,13 +40,37 @@ export class Login extends React.Component {
         }
       )
       .then(response => {
-        if (response.data.success === true) {
+        if (response.data.code === 'SI001') {
           auth.login(() => {
             this.setState({
-              toHome: true
+              toHome: true,
+              alertVisible: true,
+              alertColor: "success",
+              alertText: "Success!"
             });
           });
           setInStorage("token", response.data.token);
+        }
+        if (response.data.code === 'SI008') {
+          this.setState({
+            alertVisible: true,
+            alertColor: "danger",
+            alertText: "Please enter a Valid Username"
+          })
+        }
+        if (response.data.code === 'SI007') {
+          this.setState({
+            alertVisible: true,
+            alertColor: "danger",
+            alertText: "Please enter a Valid Password"
+          })
+        }
+        if (response.data.code === 'SI002' || response.data.code === 'SI003') {
+          this.setState({
+            alertVisible: true,
+            alertColor: "danger",
+            alertText: "Invalid Username or Password"
+          })
         }
       })
       .catch(error => {
@@ -52,8 +80,7 @@ export class Login extends React.Component {
   }
 
   render() {
-    if (this.state.toHome === true)
-    {
+    if (this.state.toHome === true) {
         return <Redirect to='/home' />
     }
     return (
@@ -75,6 +102,7 @@ export class Login extends React.Component {
               </div>
             </div>
             <div className="footer">
+            {this.state.alertVisible ? <Alert color={this.state.alertColor} message={this.state.alertText}/> : null}
             <button type="submit" className="btn">
               Login
             </button>

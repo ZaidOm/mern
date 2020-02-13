@@ -22,19 +22,22 @@ router.route('/add').post((req, res) => {
     if(!username) {
       return res.send({
         success: false,
-        message: 'Error: Username cannot be blank'
+        message: 'Error: Username cannot be blank',
+        code: 'SU004'
       });
     }
     if(!email) {
       return res.send({
         success: false,
-        message: 'Error: email cannot be blank'
+        message: 'Error: email cannot be blank',
+        code: 'SU005'
       });
     }
     if(!password) {
       return res.send({
         success: false,
-        message: 'Error: Password cannot be blank'
+        message: 'Error: Password cannot be blank',
+        code: 'SU006'
       });
     }
 
@@ -46,12 +49,14 @@ router.route('/add').post((req, res) => {
       if (err) {
         return res.send({
           success: false,
-          message: 'Error: Server error'
+          message: 'Error: Server error',
+          code: 'SU003'
         });
       } else if (previousUsers.length > 0) {
         return res.send({
           success: false,
-          message: 'Error: Account already exists'
+          message: 'Error: Account already exists',
+          code: 'SU002'
         });
       }
       // Save new User
@@ -64,12 +69,14 @@ router.route('/add').post((req, res) => {
         if (err) {
           return res.send({
             success: false,
-            message: 'Error: Server error'
+            message: 'Error: Server error',
+            code: 'SU003'
           });
         }
         return res.send({
           success: true,
-          message: 'Signed up'
+          message: 'Signed up',
+          code: 'SU001'
         });
       });
     });
@@ -85,13 +92,15 @@ router.route('/signin').post((req, res, next) => {
   if(!username) {
     return res.send({
       success: false,
-      message: 'Error: Username cannot be blank'
+      message: 'Error: Username cannot be blank',
+      code: 'SI008',
     });
   }
   if(!password) {
     return res.send({
       success: false,
-      message: 'Error: Password cannot be blank'
+      message: 'Error: Password cannot be blank',
+      code: 'SI007'
     });
   }
 
@@ -99,23 +108,25 @@ router.route('/signin').post((req, res, next) => {
     username: username
   }, (err, users) => {
     if (err) {
-      console.log('err 2:', err);
       return res.send({
         success: false,
-        message: 'Error: server error'
+        message: 'Error: Server Error',
+        code: 'SI004'
       });
     }
     if (users.length != 1) {
       return res.send({
         success: false,
-        message: 'Error: Invalid'
+        message: 'Error: User Length',
+        code: 'SI003',
       });
     }
     const user = users[0];
     if (!user.validPassword(password)) {
       return res.send({
         success: false,
-        message: 'Error: Invalid'
+        message: 'Error: Invalid Username or Password',
+        code: 'SI002'
       });
     }
     // Otherwise correct user
@@ -123,16 +134,17 @@ router.route('/signin').post((req, res, next) => {
     userSession.userId = user._id;
     userSession.save((err, doc) => {
       if (err) {
-        console.log(err);
         return res.send({
           success: false,
-          message: 'Error: server error'
+          message: 'Error: server error',
+          code: 'SI004'
         });
       }
       return res.send({
         success: true,
         message: 'Valid sign in',
-        token: user._id
+        token: user._id,
+        code: 'SI001'
       });
     });
   });

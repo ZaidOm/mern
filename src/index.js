@@ -5,7 +5,7 @@ import { Home } from "./components/home/home";
 import { ProtectedRoute } from "./components/routes/protected.route";
 
 import { BrowserRouter, Route, Switch } from "react-router-dom";
-
+import 'bootstrap/dist/css/bootstrap.min.css';
 import "./index.scss";
 
 function App() {
