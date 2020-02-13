@@ -2,8 +2,10 @@ import React from "react";
 import loginImg from "./../../assets/logo.png";
 import axios from "axios";
 import { Redirect } from "react-router-dom";
-import Alert from './../validation/alert';
+import { AvForm, AvField } from 'availity-reactstrap-validation';
+import { Button, FormGroup, Label, FormFeedback} from 'reactstrap';
 
+import Alert from './../validation/alert';
 import auth from "./../auth/auth.user";
 import {setInStorage} from "./../../utils/storage";
 
@@ -29,7 +31,7 @@ export class Register extends React.Component {
       });
   };
 
-  submitRegister(e){
+  submitRegister(){
     const { username, email, password } = this.state;
 
     axios
@@ -50,11 +52,17 @@ export class Register extends React.Component {
           });
           setInStorage("token", response.data.token);
         }
+        if (response.data.code === 'SU002') {
+          this.setState({
+            alertVisible: true,
+            alertColor: "danger",
+            alertText: "Account already exists!"
+          })
+        }
       })
       .catch(error => {
         console.log("register error", error);
       });
-    e.preventDefault();
   }
 
   render() {
@@ -69,28 +77,42 @@ export class Register extends React.Component {
           <div className="image">
             <img src={loginImg} alt="login-img" />
           </div>
-          <form onSubmit={e => this.submitRegister(e)} >
-            <div className="form">
-              <div className="form-group">
-                <label htmlFor="username">Username</label>
-                <input type="text" name="username" placeholder="username" value={this.state.username} onChange={e => this.change(e)}/>
-              </div>
-              <div className="form-group">
-                <label htmlFor="email">Email</label>
-                <input type="text" name="email" placeholder="email" value={this.state.email} onChange={e => this.change(e)}/>
-              </div>
-              <div className="form-group">
-                <label htmlFor="password">Password</label>
-                <input type="password" name="password" placeholder="password" value={this.state.password} onChange={e => this.change(e)}/>
-              </div>
-            </div>
+          <AvForm 
+          className="form"
+          onSubmit={() => this.submitRegister()} >
+            <FormGroup
+            className="form-group">
+              <Label htmlFor="username">Username</Label>
+              <AvField type="text" name="username" placeholder="username" value={this.state.username} onChange={e => this.change(e)} validate={{
+                  required: {value: true, errorMessage: 'Oh No! That doesn\'t look like a Valid Username.'},
+                  pattern: {value: '^[A-Za-z0-9]+$', errorMessage: 'Your Username must be composed only with letter and numbers'}
+                }}/>
+            </FormGroup>
+            <FormGroup
+            className="form-group">
+              <Label htmlFor="email">Email</Label>
+              <AvField type="text" name="email" placeholder="email" value={this.state.email} onChange={e => this.change(e)} validate={{
+                  required: {value: true, errorMessage: 'Don\'t forget to fill out your email!'},
+                  pattern: {value: '/^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/', 
+                  errorMessage: 'Hmm, Is that really your email?.'}
+                }}/>
+            </FormGroup>
+            <FormGroup
+            className="form-group">
+              <Label htmlFor="password">Password</Label>
+              <AvField type="password" name="password" placeholder="password" value={this.state.password} onChange={e => this.change(e)} validate={{
+                  required: {value: true, errorMessage: 'You\'re going to want a password... right?'}
+                }}/>
+            </FormGroup>
             <div className="footer">
-            {this.state.alertVisible ? <Alert color={this.state.alertColor} message={this.state.alertText}/> : null}
-            <button type="submit" className="btn">
+            <Button type="submit" className="btn">
               Register
-            </button>
+            </Button>
             </div>
-          </form>
+          </AvForm>
+          <div className="alert">
+            {this.state.alertVisible ? <Alert color={this.state.alertColor} message={this.state.alertText}/> : null}
+          </div>
         </div>
       </div>
     );
