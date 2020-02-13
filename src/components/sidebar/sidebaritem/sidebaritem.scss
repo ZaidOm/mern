@@ -1,0 +1,26 @@
+.sidebar-item {
+    background: #474545;
+    color: #ffffff;
+    margin-top: 20px;
+    span {
+      i.icon {
+        margin-right: 20px;
+        margin-left: 20px;
+        color: #ffffff;
+      }
+    }
+    &.highlight-item {
+      span {
+        font-weight: 600;
+      }
+  
+      i.icon {
+        color: #ff0002;
+      }
+    }
+  }
+  
+  .sidebar-item-alignment-container {
+    display: flex;
+    align-items: center;
+  }

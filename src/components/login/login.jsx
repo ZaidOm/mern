@@ -52,8 +52,8 @@ export class Login extends React.Component {
               alertColor: "success",
               alertText: "Success!"
             });
+            setInStorage("token", response.data.token);
           });
-          setInStorage("token", response.data.token);
         }
         if (response.data.code === 'SI002' || response.data.code === 'SI003') {
           this.setState({

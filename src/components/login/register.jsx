@@ -49,8 +49,8 @@ export class Register extends React.Component {
             this.setState({
               toHome: true
             });
+            setInStorage("token", response.data.token);
           });
-          setInStorage("token", response.data.token);
         }
         if (response.data.code === 'SU002') {
           this.setState({

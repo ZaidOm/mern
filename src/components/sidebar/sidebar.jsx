@@ -1,57 +1,64 @@
-import React from 'react'
-import SideNav, { NavItem, NavIcon, NavText } from '@trendmicro/react-sidenav';
-import '@trendmicro/react-sidenav/dist/react-sidenav.css';
+import React from 'react';
+import axios from "axios";
+import { Redirect } from "react-router-dom";
+import {SideBarItem} from './sidebaritem/sidebaritem.jsx';
+import {SideBarHeader} from './sidebarheader/sidebarheader';
+import {SideBarFooter} from './sidebarfooter/sidebarfooter';
+import {Menu} from 'semantic-ui-react';
 
-export class Sidebar extends React.Component{
-  constructor() {
-    super();
-    this.state = {
-      selected: 'home',
-      loggedOut: false
+import LogoReverse from './../../assets/logoreverse.png';
+import auth from "./../auth/auth.user";
+import { deleteFromStorage } from "./../../utils/storage";
+import './sidebar.scss';
+
+export default class SideBar extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state={
+      toLogin: false,
+      token: props.token,
     };
   }
-  onSelect = (selected) => {
-    this.setState({ selected: selected });
+
+  change = (e) => {
+    this.setState({
+        [e.target.name]: e.target.value
+    });
   };
 
-  isLoggedOut() {
-    this.setState({
-      loggedOut: true
-    })
-    return this.state.loggedOut;
+  submitLogout(){
+    axios
+      .get(
+        "http://localhost:5000/users/logout?token=" + this.state.token,
+      )
+      .then(response => {
+        if (response.data.success === true) {
+          auth.logout(() => {
+            this.setState({
+              toLogin: true
+            });
+            deleteFromStorage(this.state.token);
+          });
+        }
+      })
+      .catch(error => {
+        console.log("logout error", error);
+      });
   }
 
   render() {
-    if (this.selected === 'logout')
+    if (this.state.toLogin === true)
     {
-      this.isLoggedOut();
+        return <Redirect to='/' />
     }
     return (
-    <SideNav
-    onSelect={this.onSelect}
-    >
-      <SideNav.Toggle />
-      <SideNav.Nav defaultSelected="home">
-          <NavItem eventKey="home">
-              <NavIcon>
-                  <i className="fa fa-fw fa-home" style={{ fontSize: '1.75em' }} />
-              </NavIcon>
-              <NavText>
-                  Home
-              </NavText>
-          </NavItem>
-          <NavItem eventKey="logout">
-              <NavIcon>
-                  <i className="fa fa-sign-out" style={{ fontSize: '1.75em' }} />
-              </NavIcon>
-              <NavText>
-                  Logout
-              </NavText>
-          </NavItem>
-      </SideNav.Nav>
-  </SideNav>
-    )
+    <Menu borderless vertical stackable fixed='left' className='side-nav'>
+      <SideBarHeader image={LogoReverse}/>
+        <SideBarItem highlight={true}  label='Home' icon='fa fa-home'/>
+        <SideBarItem label='Settings' icon='fa fa-cogs'/>
+        <SideBarItem label='Logout' icon='fa fa-sign-out' onClick={() => this.submitLogout()}/>
+        <SideBarFooter/>
+      </Menu>
+    );
   }
 }
-
-export default Sidebar

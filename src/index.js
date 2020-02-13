@@ -3,9 +3,10 @@ import ReactDOM from 'react-dom';
 import LoginRegister from "./components/login/loginregister";
 import { Home } from "./components/home/home";
 import { ProtectedRoute } from "./components/routes/protected.route";
-
 import { BrowserRouter, Route, Switch } from "react-router-dom";
+
 import 'bootstrap/dist/css/bootstrap.min.css';
+import './../node_modules/font-awesome/css/font-awesome.min.css';
 import "./index.scss";
 
 function App() {
