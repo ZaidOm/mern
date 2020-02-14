@@ -1,17 +1,13 @@
 @import '../../styles/shared.scss';
 
-$sidebar-hover-color: #ebebeb;
+$sidebar-hover-color: #686666;
+
 .ui.menu.fixed.side-nav {
   background-color: #474545;
-  overflow-y: auto;
   padding-bottom: $header-nav-height;
-
+  position: fixed; 
   .sidebar-item:hover {
     background: $sidebar-hover-color;
-  }
-
-  .subscription:hover {
-    background: #ebebeb;
     cursor: pointer;
   }
 }

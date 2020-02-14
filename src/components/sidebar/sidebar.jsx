@@ -37,7 +37,7 @@ export default class SideBar extends React.Component {
             this.setState({
               toLogin: true
             });
-            deleteFromStorage(this.state.token);
+            deleteFromStorage("token",this.state.token);
           });
         }
       })
@@ -55,7 +55,7 @@ export default class SideBar extends React.Component {
     <Menu borderless vertical stackable fixed='left' className='side-nav'>
       <SideBarHeader image={LogoReverse}/>
         <SideBarItem highlight={true}  label='Home' icon='fa fa-home'/>
-        <SideBarItem label='Settings' icon='fa fa-cogs'/>
+        <SideBarItem label='Settings' icon='fa fa-cog'/>
         <SideBarItem label='Logout' icon='fa fa-sign-out' onClick={() => this.submitLogout()}/>
         <SideBarFooter/>
       </Menu>
