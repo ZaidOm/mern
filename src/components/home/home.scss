@@ -1,4 +1,17 @@
+.home {
+    text-align: center;
+    display: flex;
+    align-items: center;
+}
+
 .home-container {
-    overflow-x: hidden;
-    overflow-y: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.home-header {
+    justify-content: center;
+    align-content: center;
+    flex-direction: row;
 }
