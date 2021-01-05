@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "availity-reactstrap-validation": "^2.6.1",
-    "axios": "^0.19.0",
+    "axios": "^0.21.1",
     "bcrypt": "^3.0.7",
     "bootstrap": "^4.4.1",
     "font-awesome": "^4.7.0",
